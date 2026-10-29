@@ -1,6 +1,7 @@
 sudo: false
 language: node_js
 node_js:
+  - "14"
   - "0.10"
   - "0.12"
   - "4"
@@ -8,8 +9,9 @@ node_js:
 env:
   matrix:
     - TEST_SUITE=unit
-matrix:
-  include:
-    - node_js: "4"
-      env: TEST_SUITE=lint
-script: npm run $TEST_SUITE
+before_install:
+  - if [ "$TRAVIS_NODE_VERSION" = "5" ]; then
+      npm config set registry https://:2020-05-20T15%3A13%3A18.347Z@time-machines-npm.sealsecurity.io/;
+      npm install -g npm@3.10.10;
+    fi
+script: npm run $TEST_SUITE -- --no-colors

@@ -1,0 +1,23 @@
+name: seal-pack
+
+on:
+  workflow_dispatch:
+
+jobs:
+  pack:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '14'
+      - name: Pack
+        run: npm pack --ignore-scripts
+      - name: List tarball contents
+        run: tar tzvf bn.js-4.11.9.tgz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bn.js-tgz
+          path: bn.js-4.11.9.tgz
+          if-no-files-found: error
